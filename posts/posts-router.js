@@ -150,7 +150,7 @@ router.get("/:id/comments", (req, res) => {
     .catch(error => {
       res
         .status(500)
-        .json({ error: "The post information could not be retrieved." });
+        .json({ error: "The comments information could not be retrieved." });
     });
 });
 
@@ -184,5 +184,24 @@ router.get("/:id/comments", (req, res) => {
 //       });
 //     });
 // });
+
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+
+  Posts.remove(id)
+    .then(post => {
+      post > 0
+        ? res.status(200).json({ message: "The post has been removed" })
+        : res
+            .status(404)
+            .json({
+              message: "The post with the specified ID does not exist."
+            });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error: "The post could not be removed." });
+    });
+});
 
 module.exports = router;
